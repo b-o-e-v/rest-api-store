@@ -15,7 +15,7 @@ type Config struct {
 // СОЗДАЕМ НОВЫЙ КОНФИГ
 func NewConfig() *Config {
 	return &Config{
-		DbHost:     healpers.GetEnv("DB_HOST", "localost"),
+		DbHost:     healpers.GetEnv("DB_HOST", "localhost"),
 		DbPort:     healpers.GetEnv("DB_PORT", "5432"),
 		DbName:     healpers.GetEnv("DB_NAME", "store"),
 		DbUser:     healpers.GetEnv("DB_USER", "root"),
@@ -23,3 +23,5 @@ func NewConfig() *Config {
 		SslMode:    healpers.GetEnv("SSL_MODE", "disable"),
 	}
 }
+
+// postgres://DbUser:DbPassword@DbHost:DbPort/DbName?sslmode=SslMode
