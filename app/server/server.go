@@ -38,8 +38,8 @@ func (s *Server) Start() error {
 		return err
 	}
 
-	s.logger.Info("Сервер запущен!")
-	s.logger.Info("Postgres started at PORT: ", s.config.Store.DbPort)
+	s.logger.Info("The server is running on port PORT: ", s.config.Port)
+	s.logger.Info("Postgres started on port PORT: ", s.config.Store.DbPort)
 
 	return http.ListenAndServe(s.config.Port, s.router)
 }
