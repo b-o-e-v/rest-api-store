@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/b-o-e-v/rest-api-store/app/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -13,6 +14,7 @@ type Server struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	store  *store.Store
 }
 
 // СОЗДАЕМ НОВУЮ КОНФИГУРАЦИЮ СЕРВЕРА
@@ -32,9 +34,14 @@ func (s *Server) Start() error {
 
 	s.configureRouter()
 
-	s.logger.Info("Сервер запущен!")
+	if err := s.configureStore(); err != nil {
+		return err
+	}
 
-	return http.ListenAndServe(s.config.Host, s.router)
+	s.logger.Info("Сервер запущен!")
+	s.logger.Info("Postgres started at PORT: ", s.config.Store.DbPort)
+
+	return http.ListenAndServe(s.config.Port, s.router)
 }
 
 // КОНФИГУРИРУЕМ ЛОГГЕР
@@ -52,6 +59,16 @@ func (s *Server) configureLoger() error {
 // КОНФИГУРИРУЕМ РОУТЕР
 func (s *Server) configureRouter() {
 	s.router.HandleFunc("/hello", s.HandleHello())
+}
+
+func (s *Server) configureStore() error {
+	st := store.New(s.config.Store)
+	if err := st.Open(); err != nil {
+		return err
+	}
+
+	s.store = st
+	return nil
 }
 
 func (s *Server) HandleHello() http.HandlerFunc {

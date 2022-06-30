@@ -2,60 +2,23 @@ package server
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+
+	"github.com/b-o-e-v/rest-api-store/app/store"
+	"github.com/b-o-e-v/rest-api-store/healpers"
 )
 
 // СТРУКТУРА КОНФИГА
 type Config struct {
-	Host     string
+	Port     string
 	LogLevel string
+	Store    *store.Config
 }
 
 // СОЗДАЕМ НОВЫЙ КОНФИГ
 func NewConfig() *Config {
 	return &Config{
-		Host:     fmt.Sprintf(":%s", getEnv("HOST", "3000")),
-		LogLevel: getEnv("LOG_LEVEL", "debug"),
+		Port:     fmt.Sprintf(":%s", healpers.GetEnv("PORT", "3000")),
+		LogLevel: healpers.GetEnv("LOG_LEVEL", "debug"),
+		Store:    store.NewConfig(),
 	}
-}
-
-// ПОЛУЧАЕМ ДАННЫЕ ИЗ ПЕРЕМЕННЫХ ОКРУЖЕНИЯ
-func getEnv(key string, defaultVal string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-
-	return defaultVal
-}
-
-func getEnvAsInt(name string, defaultVal int) int {
-	valueStr := getEnv(name, "")
-	if value, err := strconv.Atoi(valueStr); err == nil {
-		return value
-	}
-
-	return defaultVal
-}
-
-func getEnvAsBool(name string, defaultVal bool) bool {
-	valStr := getEnv(name, "")
-	if val, err := strconv.ParseBool(valStr); err == nil {
-		return val
-	}
-
-	return defaultVal
-}
-
-func getEnvAsSlice(name string, defaultVal []string, sep string) []string {
-	valStr := getEnv(name, "")
-
-	if valStr == "" {
-		return defaultVal
-	}
-
-	val := strings.Split(valStr, sep)
-
-	return val
 }
