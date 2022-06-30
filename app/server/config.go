@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 
+	"github.com/b-o-e-v/rest-api-store/app/healpers"
 	"github.com/b-o-e-v/rest-api-store/app/store"
-	"github.com/b-o-e-v/rest-api-store/healpers"
 )
 
 // СТРУКТУРА КОНФИГА

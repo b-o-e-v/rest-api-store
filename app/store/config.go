@@ -1,6 +1,6 @@
 package store
 
-import "github.com/b-o-e-v/rest-api-store/healpers"
+import "github.com/b-o-e-v/rest-api-store/app/healpers"
 
 // СТРУКТУРА КОНФИГА
 type Config struct {
